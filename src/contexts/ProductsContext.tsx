@@ -10,6 +10,7 @@ interface Card {
 
 interface ProductsContextProps {
   cards: Card[];
+  setCards: React.Dispatch<React.SetStateAction<Card[]>>; // Adicionando setCards
   addCard: (card: Card) => void;
   deleteCard: (id: number) => void;
 }
@@ -43,6 +44,7 @@ export const ProductsProvider: React.FC<ProductsProviderProps> = ({ children }) 
   const contextValue: ProductsContextProps = {
     cards,
     addCard,
+    setCards,
     deleteCard,
   };
 

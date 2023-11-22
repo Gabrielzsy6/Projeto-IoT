@@ -2,6 +2,7 @@ import { Tabs } from "expo-router";
 import { MaterialIcons } from '@expo/vector-icons';
 import { ProductsProvider } from "@/contexts/ProductsContext";
 
+
 export default function TabRoutesLayout(){
 return(
     <ProductsProvider>
