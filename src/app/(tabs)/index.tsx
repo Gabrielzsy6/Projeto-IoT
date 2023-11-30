@@ -59,9 +59,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       ) : (
         <View>
           <Text style={styles.welcomeText}>
-            Olá, seja muito bem-vindo ao Smartz.
+            Olá, seja muito bem-vindo ao TechForce
           </Text>
-          <Text style={styles.subtitle}>A sua casa na palma da sua mão.</Text>
+          <Text style={styles.subtitle}>A sua casa na palma da sua mão</Text>
 
           {showCreateAccountFields ? (
             <View>

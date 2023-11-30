@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  FlatList, 
-  TouchableOpacity, 
-  TextInput, 
-  Alert 
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  TextInput,
+  Alert,
 } from 'react-native';
-import { 
-  useNavigation, 
-  RouteProp 
+import {
+  useNavigation,
+  RouteProp
 } from '@react-navigation/native';
-import { 
-  createStackNavigator, 
-  StackNavigationProp 
+import {
+  createStackNavigator,
+  StackNavigationProp
 } from '@react-navigation/stack';
 import { useProductsContext } from '@/contexts/ProductsContext';
 
@@ -28,7 +28,7 @@ interface Card {
 type ProfileStackParamList = {
   Profile: undefined;
   CardDetails: { item: Card };
-  Temperature: undefined; // Adicionando a nova rota 'Temperature'
+  Temperature: undefined;
 };
 
 type ProfileScreenNavigationProp = StackNavigationProp<ProfileStackParamList, 'Profile'>;
@@ -61,19 +61,19 @@ const CardDetailsScreen: React.FC<{
 
   const [intensityLevel, setIntensityLevel] = useState(1);
 
-const increaseIntensity = () => {
-  if (intensityLevel < 5) {
-    setIntensityLevel(prevLevel => prevLevel + 1);
-  } else {
-    setIntensityLevel(1); // Volta ao primeiro nível se atingir o máximo
-  }
-};
+  const increaseIntensity = () => {
+    if (intensityLevel < 5) {
+      setIntensityLevel(prevLevel => prevLevel + 1);
+    } else {
+      setIntensityLevel(1);
+    }
+  };
 
   const toggleButtonStyles = (isOn: boolean) => ({
     width: '40%',
     marginTop: 20,
     marginBottom: 20,
-    backgroundColor: isOn ? '#FF0000' : '#1DD41E' ,
+    backgroundColor: isOn ? '#FF0000' : '#1DD41E',
     borderRadius: 10,
     padding: 15,
     alignItems: 'center',
@@ -108,11 +108,34 @@ const TemperatureScreen: React.FC = () => {
   const handleSubmit = () => {
     const temp = parseFloat(temperature);
     console.log('Temperatura atual:', temp);
-    if (!isNaN(temp) && temp > 30) {
-      Alert.alert(
-        'Atenção!',
-        'A temperatura está acima de 30 graus. Recomenda-se ligar o ar-condicionado.'
-      );
+    if (!isNaN(temp)) {
+      if (temp > 30) {
+        Alert.alert(
+          'Atenção!',
+          'A temperatura está acima de 30 graus. Recomenda-se ligar o ar-condicionado.',
+          [
+            { text: 'OK', onPress: () => console.log('OK Pressed') }
+          ]
+        );
+      } else if (temp <= 5) {
+        Alert.alert(
+          'Atenção!',
+          'A temperatura está muito baixa. Recomenda-se aquecer o local.',
+          [
+            { text: 'OK', onPress: () => console.log('OK Pressed') }
+          ]
+        );
+      } else {
+        Alert.alert(
+          'Aviso',
+          'A temperatura está adequada.',
+          [
+            { text: 'OK', onPress: () => console.log('OK Pressed') }
+          ]
+        );
+      }
+    } else {
+      Alert.alert('Erro', 'Por favor, insira uma temperatura válida.');
     }
     navigation.goBack();
   };
@@ -133,7 +156,6 @@ const TemperatureScreen: React.FC = () => {
     </View>
   );
 };
-
 const Profile: React.FC = () => {
   const { cards, setCards } = useProductsContext();
   const navigation = useNavigation<ProfileScreenNavigationProp>();
@@ -170,26 +192,26 @@ const Profile: React.FC = () => {
       {loading ? (
         <Text style={styles.loadingText}>Aguardando seus produtos</Text>
       ) : (
-       <FlatList
-  data={cards}
-  keyExtractor={(item: Card) => item.id.toString()}
-  numColumns={2}
-  renderItem={({ item }: { item: Card }) => (
-    <TouchableOpacity onPress={() => navigateToDetails(item)}>
-      <View style={styles.cardContainer}>
-        <Text style={styles.cardText}>{`Nome: ${item.name}`}</Text>
-        <Text style={styles.cardText}>{`Comodo: ${item.comodo}`}</Text>
-        <Text style={styles.cardText}>{`Tipo: ${item.tipo}`}</Text>
-        <TouchableOpacity
-          onPress={() => handleDeleteCard(item.id)}
-          style={{ ...styles.deleteButton, marginTop: 4, padding: 6 }}
-        >
-          <Text style={styles.deleteButtonText}>Deletar Card</Text>
-        </TouchableOpacity>
-      </View>
-    </TouchableOpacity>
-  )}
-/>
+        <FlatList
+          data={cards}
+          keyExtractor={(item: Card) => item.id.toString()}
+          numColumns={2}
+          renderItem={({ item }: { item: Card }) => (
+            <TouchableOpacity onPress={() => navigateToDetails(item)}>
+              <View style={styles.cardContainer}>
+                <Text style={styles.cardText}>{`Nome: ${item.name}`}</Text>
+                <Text style={styles.cardText}>{`Comodo: ${item.comodo}`}</Text>
+                <Text style={styles.cardText}>{`Tipo: ${item.tipo}`}</Text>
+                <TouchableOpacity
+                  onPress={() => handleDeleteCard(item.id)}
+                  style={{ ...styles.deleteButton, marginTop: 4, padding: 6 }}
+                >
+                  <Text style={styles.deleteButtonText}>Deletar Card</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
       )}
     </View>
   );
@@ -242,7 +264,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
-    width: 'auto', // Definir a largura automática para permitir o preenchimento total da tela
+    width: 'auto',
   },
   cardText: {
     marginBottom: 8,
@@ -326,7 +348,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
-
 
 const AppNavigator: React.FC = () => {
   return (
